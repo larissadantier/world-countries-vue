@@ -1,6 +1,6 @@
 2<script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import Card from '../components/Card.vue';
 
@@ -13,48 +13,76 @@ const bordersDetails = ref<BorderDetails[]>([]);
 const loading = ref<boolean>(false);
 
 
+const fetchBorderDetails = async (border: string) => {
+  loading.value = true;
+  try {
+    const borderResponse = await fetch(`https://restcountries.com/v3.1/alpha/${border}`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+      }
+    });
+    const borderData = await borderResponse.json();
+    return borderData[0];
+  } catch (error) {
+      loading.value = false;
+      console.error('Data retrieval error:', error);
+      return null;
+  } finally {
+    loading.value = false;
+  }
+};
+
   const fetchCountry = async () => {
+    if (!router.params.id) return;
+
     loading.value = true;
 
     try {
       const response = await fetch(`https://restcountries.com/v3.1/alpha/${router.params.id}`);
       const data = await response.json();
-      country.value = data[0];
+      country.value = data[0]; 
 
-      const borders = country?.value?.borders || [];
-      const borderDetails = await Promise.all(
-        borders.map(async (border) => {
-          const borderResponse = await fetch(`https://restcountries.com/v3.1/alpha/${border}`);
-          const borderData = await borderResponse.json();
-          return borderData[0];
-        })
-      );
+      if(country?.value?.borders) {
+        const borders = country.value.borders;
 
-      bordersDetails.value = borderDetails;
+        const borderDetails = await Promise.all(
+          borders.map((border) => fetchBorderDetails(border))
+        );
+
+        bordersDetails.value = borderDetails.filter((detail) => detail !== null);
+      }
+
     } catch (error) {
       console.error('Data retrieval error:', error);
       loading.value = false;
     } finally {
       loading.value = false;
     }
+  };
 
   watch(
     () => router.params.id,
-    () => {
-      fetchCountry();
+    (newId) => {
+      if (newId) {
+        fetchCountry();
+      }
     }
   );
-};
 
-onMounted(() => {
-  fetchCountry();
-});
+  onMounted(() => {
+    fetchCountry();
+  });
+
+  onBeforeRouteLeave(() => {
+    country.value = null;
+    bordersDetails.value = [];
+  });
 </script>
 
 
 <template>
   <div class="max-w-full flex flex-col space-y-13">
-    <section class="w-full space-y-4">
+    <section v-if="!loading" class="w-full space-y-4">
         <header>
           <div> 
             <h1 class="text-center text-4xl text-gray-800 font-bold">
@@ -96,7 +124,7 @@ onMounted(() => {
    
     </section>
 
-    <section v-if="country?.borders" class="space-y-4">          
+    <section v-if="!loading && country?.borders" class="space-y-4">          
         <h1 class="text-4xl text-gray-800 font-bold">
           Border countries
         </h1>
