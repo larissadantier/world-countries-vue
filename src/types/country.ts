@@ -13,3 +13,16 @@ export interface Country {
   borders: string[];
   flags: { png: string };
 }
+
+export interface BorderDetails {
+  name: {
+    common: string;
+    official: string;
+  };
+  flags: {
+    svg: string;
+    png: string;
+  };
+  cca3: string; 
+  capital: string | null; 
+}

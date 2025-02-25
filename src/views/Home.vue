@@ -31,11 +31,11 @@ const fetchCountries = async () => {
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 4xl:grid-cols-6 gap-4">
     <div v-for="country in countries">
       <RouterLink :to="`/country/${country.cca3}`">
-      <Card 
-        :src="country.flags.png" 
-        :name="country.name.common" 
-      />
-    </RouterLink>
+        <Card 
+          :src="country.flags.png" 
+          :name="country.name.common" 
+        />
+      </RouterLink>
     </div>
 </section>
 </template>
