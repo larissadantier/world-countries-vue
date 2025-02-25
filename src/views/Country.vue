@@ -5,6 +5,8 @@ import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import Card from '../components/Card.vue';
 import Spinner from '../components/Spinner.vue';
 
+import { formatNumberWithUnits } from '../utils/formatNumbers';
+
 import type { Country, BorderDetails } from '../types/country';
 
 const router = useRoute();
@@ -110,7 +112,7 @@ const fetchBorderDetails = async (border: string) => {
 
             <h2 class="text-lg">
               <span class="text-gray-800 font-bold">Population:</span> 
-              {{ country?.population }}
+              {{ formatNumberWithUnits(country?.population ?? 0) }}
             </h2> 
             <h2 class="text-gray-800 font-bold text-lg space-x-4">
               Languages:
