@@ -32,7 +32,7 @@ const loading = ref<boolean>(false);
 
       bordersDetails.value = borderDetails;
     } catch (error) {
-      console.error('Erro ao buscar os dados:', error);
+      console.error('Data retrieval error:', error);
       loading.value = false;
     } finally {
       loading.value = false;
@@ -62,7 +62,7 @@ onMounted(() => {
             </h1>
           </div>
 
-          <RouterLink :to="'/'"> <- Voltar</RouterLink >
+          <RouterLink :to="'/'"> <- Back</RouterLink >
         </header>
 
         <div class="flex flex-col-reverse justify-center gap-4 items-center sm:gap-0 sm:flex-row sm:justify-between bg-white px-8 py-5 rounded-xl shadow-md">
@@ -98,7 +98,7 @@ onMounted(() => {
 
     <section v-if="country?.borders" class="space-y-4">          
         <h1 class="text-4xl text-gray-800 font-bold">
-          Países que fazem fronteira
+          Border countries
         </h1>
  
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 4xl:grid-cols-6 gap-4">

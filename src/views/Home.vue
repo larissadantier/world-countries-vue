@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 
 import type { Countries } from '../types/country';
 
 import Card from '../components/Card.vue';
-
-const router = useRouter();
 
 const countries = ref<Countries[]>([]);
 
@@ -17,7 +14,7 @@ const fetchCountries = async () => {
     countries.value = data;
 
   } catch (error) {
-    console.error('Erro ao buscar os dados:', error);
+    console.error('Data retrieval error:', error);
   }
 };
 
