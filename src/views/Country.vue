@@ -122,9 +122,7 @@ const fetchBorderDetails = async (border: string) => {
             </h2> 
           </section>
 
-          <section>
-            <img :src="country?.flags.png" class="max-w-[460px] max-h-[230px] rounded-xl border border-gray-200">
-          </section>
+          <img :src="country?.flags.png" class="w-full max-w-[240px] h-[131px] md:max-w-[340px] md:h-[231px] rounded-xl object-cover border border-gray-200">
         </div>
    
     </section>
