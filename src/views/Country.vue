@@ -10,8 +10,7 @@ const router = useRoute();
 
 const country = ref<Country | null>(null);
 const bordersDetails = ref<BorderDetails[]>([]);
-
-const loading = ref(false);
+const loading = ref<boolean>(false);
 
 
   const fetchCountry = async () => {
@@ -105,11 +104,11 @@ onMounted(() => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 4xl:grid-cols-6 gap-4">
           <div v-for="border in bordersDetails">
             <RouterLink :to="`/country/${border.cca3}`" :replace="true">
-              <Card           
-                :src="border.flags.png" 
-                :name="border.name.common"  
-              />
-          </RouterLink>
+                <Card           
+                  :src="border.flags.png" 
+                  :name="border.name.common"  
+                />
+            </RouterLink>
           </div>
         </div>
     </section>
