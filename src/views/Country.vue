@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import Card from '../components/Card.vue';
+import Spinner from '../components/Spinner.vue';
 
 import type { Country, BorderDetails } from '../types/country';
 
@@ -81,6 +82,8 @@ const fetchBorderDetails = async (border: string) => {
 
 
 <template>
+  <Spinner v-if="loading"/>
+
   <div class="max-w-full flex flex-col space-y-13">
     <section v-if="!loading" class="w-full space-y-4">
         <header>
